@@ -1,0 +1,10 @@
+[JUNE 9, 2014]
+
+Main Objectives for v1.6:
+
+   - Correcting the masses to reflect the single concerning isotope only. The current version 
+     concerns with the "average isotope masses", and might not give an accurate result
+   - Unit corrections for the beginning - from the XYZ reading step to serial AIMD calculations.
+     In this version everything is now in atomic units, and no further conversions are needed.
+   - Initial code with preconditioner without passing arguments - hard-coding the theory to
+     separate files. [I KNOW THIS IS NOT A GOOD PRACTICE, BUT WILL CHANGE LATER ON]

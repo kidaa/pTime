@@ -1,0 +1,11 @@
+[JULY 24, 2014]
+
+Main Objectives for v1.9:
+
+   - Improving performance by moving everything to dtemp and then move files at the later step
+   - Remove the "dtpath" argument in writeNW function on fileIO.c and fileIO.h. Please note that the changes are made in all other
+     executables involving writeNW
+
+Files affected:
+
+   all the files relating to I/O with focus on AIMD-related code first

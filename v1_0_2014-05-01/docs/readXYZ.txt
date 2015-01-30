@@ -1,0 +1,17 @@
+
+Welcome to Wasut Pornpatcharapong's C Library
+
+BE EFFICIENT AND THOROUGH IN ALL THE DETAILS!!
+
+------------------------------------------------------------------------------------------------
+
+PROGRAM NAME: readXYZ.c
+VERSION: 1.0 (Last updated - April 28, 2014)
+
+DESCRIPTION: This program reads in the coordinates from the .xyz format file without velocities,
+             and then outputs Wasut's proprietary .trajt file format
+
+OPTIONS: -P, full path to the current working directory
+         -x, file name of the original optimized xyz file
+         --help, open this documentation
+

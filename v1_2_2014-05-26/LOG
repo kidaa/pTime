@@ -1,0 +1,7 @@
+CHANGE LOG: MAY 26, 2014
+
+[12:23 PM] - Look into the code starting from readTrajt.c, which nothing should be changed. However, changes are to be made in fileIO.c
+[12:34 PM] - Update writeNW() - eliminate the force conversion factor
+[12:35 PM] - Keep the same conventions for .trajt file. Convert the units inside the pTime code instead.
+[12:40 PM] - Added the _au version for propagateX and propagateV, and added all the conversion factors in pTime.c
+[12:48 PM] - Changes made in arrayManip.c to store history in atomic units!

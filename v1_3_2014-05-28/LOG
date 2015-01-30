@@ -1,0 +1,3 @@
+CHANGE LOG - May 28, 2014
+
+[12:59PM] - Update fileIO.c's writeNW() function to write atomic unit input file format for NWChem.

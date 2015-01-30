@@ -1,0 +1,150 @@
+#############################################
+#           pTime.c documentation           #
+#       Wasut 'Khun' Pornpatcharapong       #
+#        Last Updated: Aug 12, 2014         #
+#############################################
+
+- PURPOSE
+
+   The program reads in M segments of the coordinates, velocities, and forces and
+   put them together as a vector, which will then be acted upon by an algorithm
+   based on quasi-Newton method. A Jacobian matrix is generated at the k-level
+   loop in the job submission file, and the quasi-Newton iterations are performed
+   until the convergence is reached, and we will decompose the new state vector
+   into M copies of coordinates and velocities for guessing the configurations in
+   the next M*dt period, where dt is a small timestep for a typical velocity Verlet
+   calculation.
+
+- COMPILATION GUIDE
+
+   This code contains functions declared in 4 header files, implemented
+   in their respective .c file.
+   
+      * allocRoutine.h/allocRoutine.c - Array allocation routines
+      * fileIO.h/fileIO.c - Dealing with file I/O
+      * mathOps.h/mathOps.c - Mathematical operations
+      * arrayManip.h/arrayManip.c - Array manipulation tools
+
+   We simply compile everything,
+
+   gcc -I$head -o [desired name] $src/pTime.c $src/allocRoutine.c $src/fileIO.c $src/arrayManip.c $src/mathOps.c
+
+   Since we do not use the C standard math library in pTime.c, the -lm option is not needed.
+
+- INPUTS/OUTPUTS
+
+   In this program, we deal with 5 types of files
+
+      .nw - Standard NWChem input file for force calculation. The most important
+            part of this is the embbed python script which outputs the force
+            to the proprietary format .force file
+      .trajt - Proprietary one-step configuration file (the format is explained below)
+      .traj - Proprietary multiple-step configuration file (the format is explained below)
+      .force - Proprietary one-step file containing force information.
+      .hist - Proprietary history file which store previous informations for the
+              Hessian matrix approximation according to Broyden's algorithm
+
+- PROPRIETARY FILE FORMATS
+
+   .trajt
+
+      [Column1] [Column2] [Column3] [Column4] [Column5] [Column6] [Column 7] [Column 8]
+      
+         ID_1     Mass1      x1        y1        z1        vx1        vy1       vz1 
+         ID_2     Mass2      x2        y2        z2        vx2        vy2       vz2
+          .									 .
+          . 									 .
+          . 									 .
+         ID_N     MassN      xN        yN        zN        vxN        vyN       vzN
+
+   ID: Atom/Particle's ID Number. Ranges from 1 up to N, where N is the number of atoms/particles
+       in the system
+   Mass: Atom/Particle's mass in atomic unit
+   x,y,z: Coordinates in atomic unit in the x,y,z directions
+   vx,vy,vz: Velocities in the atomic unit in the x,y,z directions
+ 
+
+   .traj
+
+      The format of .traj is similar to .trajt, except there are 9 columns instead of 8, and
+      the first column is the step number. The rest is exactly the same as the .trajt format
+
+
+   .force
+
+      [Column1] [Column2] [Column3] [Column4]
+
+         ID_1      fx1       fy1       fz1
+         ID_2      fx2       fy2       fz2
+          .				.
+          .				.
+          .				.
+         ID_N      fxN       fyN       fzN
+
+   ID: Atom/Particle's ID number (same thing as defined in the .trajt file format)
+   fx,fy,fz: Force on each particle in x,y,z direction
+
+
+   .hist
+
+      k
+      x1(1) y1(1) z1(1) ax1(1) ay1(1) az1(1)
+      x2(1) y2(1) z2(1) ax2(1) ay2(1) az2(1)
+       .				.
+       .				.
+       .	   		        .
+      xN(1) yN(1) zN(1) axN(1) ayN(1) azN(2)
+      x1(2) y1(2) z1(2) ax1(2) ay1(2) az1(2)
+      x2(2) y2(2) z2(2) ax2(2) ay2(2) az2(2)
+       .				.
+       .				.
+       .				.
+      xN(k) yN(k) zN(k) axN(k) ayN(k) azN(k)
+ 	
+   kN+1 lines total. 
+   
+   k: The number of stored previous quasi-Newton iterations (including the current one)
+   xi(j),yi(j),zi(j): The x,y,z coordinates of particle i at the j-th quasi-Newton iterations
+                      in atomic unit (j = 1 is the most recent history)
+   axi(j),ayi(j),azi(j): The x,y,z acceleration of particle i at the j-th quasi-Newton iterations
+                         in atomic unit (j = 1 is the most recent history)
+
+
+- DATA ARRANGEMENT
+
+   Data are mostly stored in 1-D dynamic arrays, whereas 2-D arrays are only used for quasi-Newton
+   history storage, atomic symbols, as well as paths to the copied configs (due to the nature of strings).
+
+   Typically, when dimensions are of our concerns, we order the coordinates and velocity by their
+   associated ID's, for example..
+
+   [x1(1) y1(1) z1(1) x2(1) y2(1) z2(1) ... xN(1) yN(1) zN(1) x1(2) y1(2) ... xN(M) yN(M) zN(M)]
+
+   where xi(j) means the coordinate of the x direction of the j-th copy of the i-th atom (with M copies) 
+   Hence, when dealing with the state vector with M copies, the array's size is normally 3MN. If dealing
+   with a single copy, the array's size is typically 3N with similar arrangement pattern.
+
+
+- USAGE
+
+   The following are input arguments. I haven't defined any default values in there yet, so please 
+   include everything in here in the input.
+
+     * -P: Path to the PARENT DIRECTORY containing all related files within cascade's /home filesystem
+     * -D: Path to the PARENT DIRECTORY containint all related files within cascade's /dtemp filesystem
+           This is important because all NWChem temporary files are written to /dtemp filesystem, which 
+           has lower read/write latency (according to the writeNW function in fileIO.c).
+     * -N: Number of particles/atoms in the system
+     * -I: The i-th level loop iterator (see the submission script for more details). Once each quasi-
+           Newton session is finished (or before it begins), we would make a guess for the initial solution
+           of the next M-sized chunk of trajectory, and this is when the next i (being 1 higher than the
+           previous step) got processed.
+     * -k: The k-th level loop iterator (steps of quasi-Newton iterations within each i-th step)
+     * -h: The desired number of previous quasi-Newton iterations used to store the history of coordinates
+           and accelerations
+     * -M: Number of chunks (fine-grained steps). Typically set to the number of compute nodes
+     * --dt: Timestep in atomic unit (for fine-grained steps)
+     * --tr: Tolerance for the Fr vector
+     * --tv: Tolerance for the Fv vector (usually lower than --tr)
+     * --help: Open this documentation
+               [PLEASE RECOMPILE THE CODE AND LINK TO THIS FILE INSTEAD!!]

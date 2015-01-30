@@ -1,0 +1,6 @@
+[JUNE 19, 2014]
+
+Main Objectives for v1.8:
+
+   - Add the -D option for path to cascade's /dtemp directory
+   - Affected programs: readTrajt, readTrajt_au, sPX series, sPV series, configCopy, pTime.

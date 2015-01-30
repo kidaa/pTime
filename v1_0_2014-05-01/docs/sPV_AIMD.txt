@@ -1,0 +1,22 @@
+
+Wasut Pornpatcharapong's C Library
+
+BE EFFICIENT AND THOROUGH IN ALL THE DETAILS!!
+
+------------------------------------------------------------------------------------------------
+
+PROGRAM NAME: sPV_AIMD.c
+VERSION: 1.0 (Last updated - April 28, 2014)
+
+DESCRIPTION: This program performs a one-step velocity verlet algorithm for updating velocities.
+             The new velocities are outputted in a proprietary .trajt format, and the trajectory
+             file (.traj) is also created. (A PROPERTIES FILE WILL BE OUTPUTTED IN THE FUTURE
+             ITERATION AS WELL)
+
+OPTIONS: -N, total number of particles
+         -I, the MD iteration counter, passed from the shell script loop
+         -P, the path to the current working directory
+         -K, the sum of kinetic energy of the previous steps (for temperature calculation)
+         -l, boolean value for 'isLastStep' ("True" or "False" only)
+         --help, open this documentation
+

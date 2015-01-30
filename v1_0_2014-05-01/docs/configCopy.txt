@@ -1,0 +1,23 @@
+
+Wasut Pornpatcharapong's C Library
+
+BE EFFICIENT AND THOROUGH IN ALL THE DETAILS!!
+
+------------------------------------------------------------------------------------------------
+
+PROGRAM NAME: configCopy.c
+VERSION: 1.1 (Last updated - April 29, 2014)
+
+UPDATES: - Command line options checking
+         - -P option added for flexibility in working in any directories
+
+DESCRIPTION: This program reads .trajt file and creates M copies of the configurations, and
+             generates M copies of .nw NWChem inputs as well. All the copies are placed in
+             a uniquely numbered directory.
+
+OPTIONS: -N, total number of particles
+         -I, PTime's I-level (outer) loop's iterator, passed from the shell script loop
+         -P, the path to the current working directory
+         -M, number of desired copies for the configuration
+         --help, open this documentation
+

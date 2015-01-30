@@ -1,0 +1,10 @@
+[JUNE 5, 2014]
+
+Main Objectives for v1.5:
+
+   - Addressing the "NaN" problem while approximating the Hessian
+   - When rDiff (check at every step) is lower than the set level of tolerance,
+     use another steps to update the Hessian instead. If all rDiff is converged,
+     simply use Hr = 0 and don't update anything!
+   - Add -t option for pTime.c for tolerance.
+   - The complied programs are in $PTIMEDIR/bin/v1_5_2014-06-05

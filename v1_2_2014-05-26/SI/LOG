@@ -1,0 +1,29 @@
+CHANGE LOG - MAY 21, 2014
+
+pTime.c
+
+[1] - Printing command line inputs to see if the program has correct values [12:55PM].
+RESULT: Everything is correct!
+
+[2] - Check if there are "NaN" values in Fv [1:05PM].
+RESULT: No "NaN" values in Fv - the velocities seems to read correctly.
+
+[3] - Check XNext value after calcXNext [2:15PM].
+RESULT: XNext is correct only at X[0], the rest are "NaN" like what was outputted.
+
+[4] - Check rTilde and vTilde [2:22PM].
+RESULT: vTilde is completely "NaN", while rTilde is valid at only the first copy and the rest are "NaN".
+
+
+PROBLEM NARROWED DOWN!!
+Error is possibly lie in the calculation step or history step. Even when initialize rTilde and vTilde to zero, still give the same result!
+Have to check the calculation and unit conversion carefully. Fr and Fv don't seem to have problems...
+
+[UPDATE 1] - Problem is confined in calcTilde!! Still don't know where... Somehow rTilde & vTilde are transformed to "NaN" for some reason...
+[UPDATE 2] - The problem is very likely associated with wrong Hr calculation... Have to track "calcHr" function VERY CAREFULLY!!
+[UPDATE 3] - The problem is "division by zero" inside "calcHr" because the history vectors essentially store the same numbers, so the differences
+             are zero, which leads to a calculation that is not feasible; thus, gives us "NaN" result.
+[UPDATE 4] - Changed the first history storage mechanism in "arrayManip" to neglect the initial coordinate. Now the code gives a more reasonable
+             result, but still have to check against regular AIMD and might need to ask corresponding people for verification.
+
+BUT YEAH, CONSIDER IT DONE!!!

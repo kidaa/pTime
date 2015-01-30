@@ -1,0 +1,18 @@
+VERSION 1.2 NOTES, BUG FIXES, AND CHANGE LOG
+
+April 30, 2014:
+
+There is still a major bug in pTime.c, which is mainly due to the unit conversions. 
+Also, convergence checking procedures need an update, because we need to check
+the norm of F vectors before entering the main calculation. We need to make this 
+change to reflect this.
+
+[12:30PM PDT] - "writeF" and "readF" routines in "fileIO" module added
+[12:32PM PDT] - Fr and Fv vectors in pTime.c are now freed at the end of program to accommodate the output of F vectors to a file
+[01:07PM PDT] - Added a new conditional statement for convergence by checking F(k) (NO NEED TO STORE F HISTORY! GO AHEAD AND
+                DELETE THE ROUTINES!)
+[01:39PM PDT] - Set the main unit systems for each vector set: Fr in Angstroms, rTilde in SI, XNext in Angstroms. Changes are made
+                in "calcXtR" and "calcXNext" methods to reflect the defined unit systems.
+[01:43PM PDT] - Changed "writeTraj" method to "write" the output instead of "append" the output.
+[02:08PM PDT] - Changed the outputing procedures in pTime.c. Now the code outputs EVERY TIME. When the iteration converges, the latest
+                output set is used later on in the pTime workflow. Done with pTime.c, testing pending!! 

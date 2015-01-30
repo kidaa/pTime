@@ -1,0 +1,19 @@
+
+Wasut Pornpatcharapong's C Library
+
+BE EFFICIENT AND THOROUGH IN ALL THE DETAILS!!
+
+------------------------------------------------------------------------------------------------
+
+PROGRAM NAME: sPX_AIMD.c
+VERSION: 1.0 (Last updated - April 28, 2014)
+
+DESCRIPTION: This program performs a one-step velocity verlet algorithm for updating positions.
+             The new coordinates are outputted in a proprietary .trajt format, and the .nw 
+             NWChem input file is outputted as well for further force calculation by NWChem.
+
+OPTIONS: -N, total number of particles
+         -I, the MD iteration counter, passed from the shell script loop
+         -P, the path to the current working directory
+         --help, open this documentation
+

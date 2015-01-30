@@ -1,0 +1,6 @@
+[JUNE 16, 2014]
+
+Main Objectives for v1.7:
+
+   - Add the boolean options for sPV and sPX for restart temperature equilibration runs
+   - Add -I option to improve readTrajt_au's flexibility
